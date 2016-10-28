@@ -1,8 +1,11 @@
-<html>
-  <head>
-    <title>{{ title }}</title>
-  </head>
-  <body>
-    <h1>Hello, {{ user.nickname }}</h1>
-  </body>
-</html>
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-12" style="text-align:center">
+    <h1>Home</h1>
+    <img src="{{ url_for('static', filename='img/logo.png') }}">
+    <p>Feature Request System</p>
+  </div>
+</div>
+{% endblock %}
