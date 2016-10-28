@@ -1,0 +1,10 @@
+#!/var/www/clients/client3/web12/web/wp/wordpress/iws/flask/bin/python
+# EASY-INSTALL-ENTRY-SCRIPT: 'sqlparse==0.2.2','console_scripts','sqlformat'
+__requires__ = 'sqlparse==0.2.2'
+import sys
+from pkg_resources import load_entry_point
+
+if __name__ == '__main__':
+    sys.exit(
+        load_entry_point('sqlparse==0.2.2', 'console_scripts', 'sqlformat')()
+    )
