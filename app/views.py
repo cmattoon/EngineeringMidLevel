@@ -1,6 +1,8 @@
-from flask import render_template, flash, redirect
-from app import app
+import datetime
+from flask import render_template, flash, redirect, jsonify
+from app import app, db, models
 from .forms import LoginForm, FeatureRequestForm
+
 
 
 @app.errorhandler(404)
@@ -22,12 +24,18 @@ def get_product_areas():
     areas = ['Policies', 'Billing', 'Claims', 'Reports']
     sort(areas) # Unless this is undesirable
     return areas
-        
+
+@app.route('/client')
+def client():
+    """This route corresponds to a single-page API client
+    using Knockout.js
+    """
+    return render_template('client.html')
 
 @app.route('/')
 @app.route('/index')
 def index():
-    user = {'nickname': 'Buddy'}
+    user = {'nickname': 'Guest'}
     return render_template('index.html',
                            title='Home',
                            user=user)
@@ -66,22 +74,9 @@ def view_feature(id):
     form = FeatureRequestForm()
     return render_template('feature.html', title='Edit Feature', form=form)
 
-@app.route('/admin/viewall')
-def admin_viewall():
-    """Show all feature requests"""
-    return render_template('admin-viewall.html',
-                           title='Admin - View All Requests')
-
-
-@app.route('/admin/users')
-def admin_users():
-    """Show all users"""
-    return render_template('admin-users.html',
-                           title='Admin - All Users')
-
-@app.route('/admin/clients')
-def admin_clients():
-    """Show all clients"""
-    return render_template('admin-clients.html',
-                           title='Admin - All Clients')
-
+@app.route('/api/features')
+def api_features():
+    """ API method to return a list of all existing features.
+    """
+    return jsonify([req.toJSON() for req in 
+            models.FeatureRequest.query.all()])
