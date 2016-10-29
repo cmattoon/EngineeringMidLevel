@@ -12,18 +12,23 @@
     form.elements['openid'].value = openid;
   }
 </script>
-<h1>Login</h1>
-<form action="" method="post" name="login">
-  {{ form.hidden_tag() }}
-  <p>OpenID
-    {{ form.openid(size=80) }}
-  </p>
-  {% for pr in providers %}
-  <a href="javascript:set_openid('{{ pr.url }}', '{{ pr.name }}');">{{ pr.name }}</a> |
-  {% endfor %}
-  <p>{{ form.remember_me }} Remember Me</p>
-  <p><input type="submit" value="Login"></p>
-  <!-- Create Account Link -->
-  <!-- Reset Password Link -->
-</form>
+<div class="row">
+  <div class="col-md-4 col-md-offset-4">
+    <h1>Login</h1>
+    <form action="" method="post" name="login">
+      {{ form.hidden_tag() }}
+      <div class="input-group">
+	<label>OpenID</label>
+	{{ form.openid(size=80,class="form-control") }}
+      </div>
+      {% for pr in providers %}
+      <a href="javascript:set_openid('{{ pr.url }}', '{{ pr.name }}');">{{ pr.name }}</a> |
+      {% endfor %}
+      <p>{{ form.remember_me }} Remember Me</p>
+      <p><input type="submit" value="Login" class="form-control btn btn-primary"></p>
+      <!-- Create Account Link -->
+      <!-- Reset Password Link -->
+    </form>
+  </div>
+</div>
 {% endblock %}

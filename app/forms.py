@@ -1,6 +1,7 @@
 from flask.ext.wtf import Form
 from wtforms import StringField, BooleanField, IntegerField, DateField, SelectField, SubmitField, TextAreaField
 from wtforms.validators import DataRequired
+from app import db, models
 
 class LoginForm(Form):
     """ For /login """
@@ -8,7 +9,7 @@ class LoginForm(Form):
     remember_me = BooleanField('remember_me', default=False)
 
 
-class FeatureRequest(Form):
+class FeatureRequestForm(Form):
     title = StringField('feature_name',
                         validators=[DataRequired])
 
@@ -28,20 +29,48 @@ class FeatureRequest(Form):
     """
     target_date = DateField('target_date',
                             validators=[DataRequired])
+
     ticket_url = StringField('ticket_url', 
                              validators=[DataRequired])
 
-    product_area = SelectField('product_area_id', choices=[
-            (1, 'Policies'),
-            (2, 'Billing'),
-            (3, 'Claims'),
-            (4, 'Reports')
-            ])
+    product_area = SelectField('product_area_id', choices=[])
 
-    client = SelectField('client_id', choices=[
-            (1, 'Client1'),
-            (2, 'Client2'),
-            (3, 'Client3'),
-            ])
+    client = SelectField('client_id', choices=[])
         
     submit = SubmitField('Create')
+
+    def __init__(self):
+        """I'm not sure this is the best way to go about this. 
+        Dynamic options could also be easily handled via KO
+        """
+        super(FeatureRequestForm, self).__init__()
+        self.product_area.choices = self.getProductAreas()
+        self.client.choices = self.getClients()
+
+
+    def getProductAreas(self):
+        """If this changes often, it might be worth storing in a table.
+        For now, I'll just keep this here and store the value as a string.
+        
+        Returns:
+            a list of strings (product area names)
+        """
+        areas = [(1,'Policies'), (2,'Billing'), (3,'Claims'), (4,'Reports')]
+        sorted(areas)
+        return areas
+
+    def getClients(self):
+        """Clients should probably be in a table for sure, if for no
+        other reason than there's likely other useful info to store
+        in that table. Alternatively, this might use an API call to
+        an in-house CRM system or something to avoid extra work in
+        keeping the list up-to-date.
+        
+        Returns:
+            a list of tuples (int(id), str(name))
+        """
+        clients = []
+        for client in models.Client.query.all():
+            clients.append( (int(client.id), str(client.name)) )
+        return clients
+                           

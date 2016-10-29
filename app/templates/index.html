@@ -1,11 +1,42 @@
 {% extends "base.html" %}
-
 {% block content %}
+
 <div class="row">
-  <div class="col-md-12" style="text-align:center">
-    <h1>Home</h1>
-    <img src="{{ url_for('static', filename='img/logo.png') }}">
-    <p>Feature Request System</p>
+  <div class="col-md-10 col-md-offset-1">
+    <h1>Feature Requests</h1>
   </div>
 </div>
+
+<div class="row">
+  <div class="col-md-10 col-md-offset-1">
+    <table id="tblRequests" width="100%" class="table table-striped table-bordered dt-responsive nowrap">
+      <thead>
+	<th>Client</th>
+	<th>Title</th>
+	<th>Priority</th>
+	<th>Date Entered</th>
+	<th>Target Date</th>
+	<th>Actions</th>
+      </thead>
+      <tbody>
+	<tr>
+	  <td>Test</td>
+	  <td>Catalina Wine Mixer 2017</td>
+	  <td>High</td>
+	  <td>10/28/2016</td>
+	  <td>12/31/2016</td>
+	  <td>
+	    <a href="/feature/1" class="btn btn-sm btn-warning">Edit</a>
+	    <a href="/feature/1" class="btn btn-sm btn-danger">Delete</a>
+	  </td>
+	</tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<script>
+$(function() {
+    $('#tblRequests').DataTable();
+});
+</script>
 {% endblock %}

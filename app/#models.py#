@@ -30,7 +30,9 @@ class FeatureRequest(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     title = db.Column(db.String(255), index=True)
     description = db.Column(db.Text)
-    client_id = db.Column(db.Integer, db.ForeignKey('client.id'))    
+    client_id = db.Column(db.Integer, db.ForeignKey('client.id'))
+
+    
     product_area = db.Column(db.String)
     client_priority = db.Column(db.Integer)
     date_entered = db.Column(db.DateTime)
