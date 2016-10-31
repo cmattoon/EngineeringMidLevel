@@ -52,19 +52,21 @@ class User(db.Model):
     def toJSON(self):
         return json.dumps(_to_json(self, self.__class__))
 
-class Client(db.Model):
+class Client(db.Model, AppModel):
     """ This table should store a list of active clients.
     This is how the dropdown is populated.
     Needs admin interface, etc..
     """
+    __public__ = ('id', 'name')
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64))
     requests = db.relationship('FeatureRequest', backref='client', lazy='dynamic')
     # active = db.Column(db.Boolean)
     # created_by ...
     # created_on ...
+
     def toJSON(self):
-        return json.dumps(_to_json(self, self.__class__))
+        return json.dumps(self.get_public())
 
 class FeatureRequest(db.Model, AppModel):
     """ Each row stores a Feature Request"""
